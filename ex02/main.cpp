@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RPN.hpp                                            :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/07 12:39:55 by tmurua            #+#    #+#             */
-/*   Updated: 2026/06/12 16:23:11 by tmurua           ###   ########.fr       */
+/*   Created: 2026/06/08 16:22:06 by tmurua            #+#    #+#             */
+/*   Updated: 2026/06/12 16:34:29 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RPN_HPP
-#define RPN_HPP
+#include "PmergeMe.hpp"
 
-#include <string>
+#include <iostream>
+#include <exception>
 
-class RPN // Reverse Polish Notation
-{
-private:
-	RPN();
-	RPN(const RPN &other);
-	RPN &operator=(const RPN &other);
-	~RPN();
+int	main(int argc, char **argv){
+	PmergeMe sorter;
 
-public:
-	static int evaluate(const std::string &expression);
-};
+	try{
+		sorter.process(argc, argv);
+		sorter.printResult(argc, argv);
+	}
+	catch (const std::exception &e){
+		std::cerr << e.what() << std::endl;
+		return (1);
+	}
 
-#endif
+	return (0);
+}

@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/06 11:08:59 by tmurua            #+#    #+#             */
-/*   Updated: 2026/06/09 09:09:49 by tmurua           ###   ########.fr       */
+/*   Updated: 2026/06/12 16:01:05 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,25 +104,29 @@ bool	BitcoinExchange::parseValue(const std::string &valueString, double &value) 
 	parseEnd = NULL;
 	value = std::strtod(valueString.c_str(), &parseEnd);
 
-	if (parseEnd == valueString.c_str())
+	if (parseEnd == valueString.c_str()) // no chars were converted into a number
 		return (false);
-	if (*parseEnd != '\0')
+	if (*parseEnd != '\0') // reject extra chars after the numeric value
 		return (false);
 	return (true);
 }
 
 // find exact date or closest lower date inside the database
+// YYYY-MM-DD strings are ordered chronologically inside the map
 bool	BitcoinExchange::findRateForDate(const std::string &date, double &rate) const{
 	std::map<std::string, double>::const_iterator	it;
 
+	// lower_bound returns the first date >= to the requested date
 	it = _database.lower_bound(date);
 
 	if (it != _database.end() && it->first == date){
 		rate = it->second;
 		return (true);
 	}
+	// there is no earlier rate if the requested date comes before the first entry
 	if (it == _database.begin())
 		return (false);
+	// no exact match: move back to the closest earlier date
 	if (it == _database.end() || it->first != date)
 		--it;
 	rate = it->second;
@@ -213,10 +217,11 @@ void	BitcoinExchange::processInput(const std::string &inputFile) const{
 	if (!file)
 		throw std::runtime_error("Error: could not open file.");
 
-	firstLine = true;
+	firstLine = true; // only treat first non-empty line as a possible header
 	while (std::getline(file, line)){
 		if (line.empty())
 			continue;
+		// skip the header when it's present
 		if (firstLine && trimSpaces(line) == "date | value"){
 			firstLine = false;
 			continue;

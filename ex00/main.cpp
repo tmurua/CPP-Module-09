@@ -5,14 +5,15 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/09 09:10:53 by tmurua            #+#    #+#             */
-/*   Updated: 2026/06/09 09:11:16 by tmurua           ###   ########.fr       */
+/*   Created: 2026/06/06 09:10:53 by tmurua            #+#    #+#             */
+/*   Updated: 2026/06/12 16:22:52 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 
 #include <iostream>
+#include <exception>
 
 int	main(int argc, char **argv){
 	BitcoinExchange	exchange;
